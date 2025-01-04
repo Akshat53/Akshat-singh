@@ -1,9 +1,9 @@
 {{ 'product-grid.css' | asset_url | stylesheet_tag }}
 
+<script src="{{ 'popup.js' | asset_url }}" defer="defer"></script>
+
 <div class="product-grid-section">
-  {% if section.settings.title != blank %}
-    <h2 class="section-title">{{ section.settings.title }}</h2>
-  {% endif %}
+  <h2 class="section-title">{{ section.settings.title }}</h2>
   
   <div class="product-grid">
     {% for block in section.blocks %}
@@ -31,20 +31,40 @@
             {% endif %}
           </div>
         </div>
-      {% else %}
-        <div class="product-item placeholder" {{ block.shopify_attributes }}>
-          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-        </div>
       {% endif %}
     {% endfor %}
   </div>
 </div>
 
+<!-- Popup Template -->
+<div class="popup-overlay">
+  <div class="product-popup">
+    <button class="close-popup" type="button" aria-label="Close popup">&times;</button>
+    
+    <div class="popup-content">
+      <div class="popup-image">
+        <img src="" alt="" id="popup-product-image">
+      </div>
+      
+      <div class="popup-details">
+        <h3 class="popup-title"></h3>
+        <div class="popup-price"></div>
+        <div class="popup-description"></div>
+        
+        <div class="variant-selectors"></div>
+        
+        <button type="button" class="add-to-cart-btn">
+          ADD TO CART →
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Rest of the schema remains the same -->
 {% schema %}
 {
   "name": "Product Grid",
-  "tag": "section",
-  "class": "section",
   "settings": [
     {
       "type": "text",
