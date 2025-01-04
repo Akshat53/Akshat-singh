@@ -47,7 +47,6 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   }
   
-  /* Popup Styles */
   .popup-overlay {
     position: fixed;
     top: 0;
@@ -55,11 +54,11 @@
     right: 0;
     bottom: 0;
     background: rgba(0,0,0,0.5);
-    display: flex;
+    display: none; /* Changed from flex to none to hide by default */
     align-items: center;
     justify-content: center;
     z-index: 1000;
-  }
+}
   
   .product-popup {
     background: white;
