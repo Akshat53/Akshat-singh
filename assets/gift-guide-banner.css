@@ -1,21 +1,22 @@
 .gift-guide-banner {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 20px;
     background: #ffffff;
   }
   
+  /* Navigation styles */
   .banner-nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 0;
+    padding: 10px 0;
+    margin-bottom: 20px;
   }
   
   .brand {
     font-size: 18px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
+    font-weight: 500;
   }
   
   .nav-center {
@@ -40,94 +41,100 @@
     background: #FFD700;
   }
   
+  /* Banner main content */
+  .banner-main {
+    position: relative;
+    min-height: 550px;
+    margin: 40px 0;
+    overflow: hidden;
+  }
+  
+  /* SVG Pattern styles */
+  .pattern-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 65%;
+    height: 100%;
+  }
+  
+  .line-icons {
+    width: 100%;
+    height: 100%;
+    stroke: #000;
+    stroke-width: 1;
+    fill: none;
+  }
+  
+  /* Content styles */
   .banner-content {
-    display: grid;
-    grid-template-columns: 1fr 1.2fr;
-    gap: 40px;
-    padding: 60px 0;
+    position: absolute;
+    left: 0;
+    bottom: 60px;
+    max-width: 500px;
+    z-index: 2;
   }
   
-  .content-left {
-    padding-right: 40px;
-  }
-  
-  .title {
+  .banner-title {
     font-size: 64px;
-    font-weight: 600;
     line-height: 1.1;
-    margin-bottom: 24px;
+    font-weight: 600;
     color: #000;
+    margin-bottom: 24px;
   }
   
-  .description {
+  .banner-description {
     font-size: 16px;
     line-height: 1.6;
     color: #333;
     margin-bottom: 32px;
-    max-width: 500px;
   }
   
   .shop-now-btn {
     background: #000;
     color: #fff;
+    border: none;
     padding: 16px 32px;
-    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: 1px;
     transition: transform 0.3s ease;
+    text-decoration: none;
   }
   
   .shop-now-btn:hover {
     transform: translateX(5px);
   }
   
-  .content-right {
-    position: relative;
-    background: #fff;
-    padding: 20px;
-  }
-  
-  .gift-items-pattern {
-    width: 100%;
-    stroke: #000;
-    stroke-width: 1px;
-    fill: none;
-  }
-  
+  /* Footer styles */
   .banner-footer {
     text-align: center;
-    padding: 20px 0;
-    border-top: 1px solid #eee;
+    padding-top: 20px;
+    border-top: 1px solid #EFEFEF;
   }
   
-  .size-text {
-    color: #666;
+  .banner-footer p {
     font-size: 12px;
-    letter-spacing: 1px;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #666;
   }
   
+  /* Responsive styles */
   @media (max-width: 992px) {
-    .banner-content {
-      grid-template-columns: 1fr;
-      gap: 20px;
-      padding: 40px 0;
+    .banner-main {
+      min-height: 450px;
     }
   
-    .content-left {
-      padding-right: 0;
-    }
-  
-    .title {
+    .banner-title {
       font-size: 48px;
     }
   
-    .content-right {
-      order: -1;
+    .pattern-container {
+      width: 55%;
     }
   }
   
@@ -138,11 +145,43 @@
       text-align: center;
     }
   
-    .title {
-      font-size: 36px;
+    .banner-main {
+      min-height: auto;
+      margin: 20px 0;
     }
   
-    .description {
-      font-size: 15px;
+    .pattern-container {
+      position: relative;
+      width: 100%;
+      height: 300px;
+      margin-bottom: 30px;
+    }
+  
+    .banner-content {
+      position: relative;
+      bottom: 0;
+      max-width: 100%;
+    }
+  
+    .banner-title {
+      font-size: 36px;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .banner-main {
+      margin: 10px 0;
+    }
+  
+    .pattern-container {
+      height: 250px;
+    }
+  
+    .banner-title {
+      font-size: 32px;
+    }
+  
+    .banner-description {
+      font-size: 14px;
     }
   }
