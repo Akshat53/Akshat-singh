@@ -4,10 +4,9 @@
         "type": "gift-guide-banner",
         "settings": {
           "brand_name": "TISSO VISION",
-          "heading": "The Gift Guide",
           "tagline": "Find the ideal gift for your loved ones.",
-          "description": "Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season.",
           "button_text": "SHOP NOW",
+          "description": "Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season.",
           "size_text": "SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL"
         }
       },
@@ -16,26 +15,44 @@
         "settings": {
           "title": "Tisso vision in the wild"
         },
-        "blocks": {
-          "product1": {
-            "type": "product"
+        "blocks": [
+          {
+            "type": "product",
+            "settings": {
+              "product": "black-leather-bag"
+            }
           },
-          "product2": {
-            "type": "product"
+          {
+            "type": "product",
+            "settings": {
+              "product": "blue-silk-tuxedo"
+            }
           },
-          "product3": {
-            "type": "product"
+          {
+            "type": "product",
+            "settings": {
+              "product": "chequered-red-shirt"
+            }
           },
-          "product4": {
-            "type": "product"
+          {
+            "type": "product",
+            "settings": {
+              "product": "classic-leather-jacket"
+            }
           },
-          "product5": {
-            "type": "product"
+          {
+            "type": "product",
+            "settings": {
+              "product": "classic-varsity-top"
+            }
           },
-          "product6": {
-            "type": "product"
+          {
+            "type": "product",
+            "settings": {
+              "product": "dark-denim-top"
+            }
           }
-        }
+        ]
       }
     },
     "order": [
