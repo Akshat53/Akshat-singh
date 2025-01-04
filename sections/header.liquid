@@ -287,6 +287,69 @@
 {%- endif -%}
 
 {% javascript %}
+document.addEventListener('DOMContentLoaded', () => {
+  // Get all required elements
+  const overlay = document.querySelector('.popup-overlay');
+  const popup = document.querySelector('.product-popup');
+  const closeBtn = document.querySelector('.close-popup');
+  const quickAddBtns = document.querySelectorAll('.quick-add-btn');
+  
+  // Function to open popup
+  function openPopup(productId) {
+    // First fetch product data
+    fetch(`/products/${productId}.js`)
+      .then(response => response.json())
+      .then(product => {
+        // Populate popup with product data
+        const image = popup.querySelector('#popup-product-image');
+        const title = popup.querySelector('.popup-title');
+        const price = popup.querySelector('.popup-price');
+        const description = popup.querySelector('.popup-description');
+        
+        image.src = product.featured_image;
+        image.alt = product.title;
+        title.textContent = product.title;
+        price.textContent = formatMoney(product.price);
+        description.textContent = product.description;
+        
+        // Show the popup
+        overlay.style.display = 'flex';
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }
+  
+  // Function to close popup
+  function closePopup() {
+    overlay.style.display = 'none';
+  }
+  
+  // Format money function
+  function formatMoney(cents) {
+    return (cents / 100).toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    });
+  }
+  
+  // Add event listeners
+  quickAddBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation(); // Prevent event bubbling
+      const productId = btn.getAttribute('data-product-id');
+      openPopup(productId);
+    });
+  });
+  
+  // Close popup when clicking close button
+  closeBtn.addEventListener('click', closePopup);
+  
+  // Close popup when clicking outside
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) closePopup();
+  });
+});
   class StickyHeader extends HTMLElement {
     constructor() {
       super();

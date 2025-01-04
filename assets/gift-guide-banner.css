@@ -3,99 +3,113 @@
     margin: 0 auto;
     padding: 2rem;
     background: #ffffff;
-    position: relative;
-    overflow: hidden;
   }
   
-  .banner-header {
+  .banner-nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 3rem;
     padding: 1rem 0;
-    position: relative;
-    z-index: 2;
-  }
-  
-  .illustration-pattern {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0.1;
-    pointer-events: none;
-    z-index: 1;
-  }
-  
-  .pattern-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-  
-  .pattern-item {
-    width: 300px;
-    height: 200px;
-    color: #000;
-  }
-  
-  .banner-content {
-    position: relative;
-    z-index: 2;
-    text-align: left;
-    max-width: 600px;
-    padding: 2rem;
-  }
-  
-  .gift-guide-title {
-    font-size: 3.5rem;
-    font-weight: bold;
-    margin-bottom: 1.5rem;
-    color: #000;
-  }
-  
-  .gift-guide-desc {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: #666;
     margin-bottom: 2rem;
   }
   
-  .shop-now-btn {
-    display: inline-flex;
-    align-items: center;
-    background: #000;
-    color: #fff;
-    padding: 1rem 2rem;
-    text-decoration: none;
+  .brand {
+    font-size: 1.5rem;
     font-weight: 500;
-    transition: transform 0.3s ease;
   }
   
-  .shop-now-btn:hover {
-    transform: translateX(10px);
-  }
-  
-  .banner-footer {
-    text-align: center;
-    border-top: 1px solid #eee;
-    padding-top: 2rem;
-    margin-top: 2rem;
-    position: relative;
-    z-index: 2;
+  .nav-center {
+    color: #333;
   }
   
   .choose-gift-btn {
     background: #FFE525;
     border: none;
     padding: 0.75rem 1.5rem;
-    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     cursor: pointer;
-    transition: transform 0.3s ease;
-    border-radius: 4px;
+    font-weight: 500;
   }
   
-  .choose-gift-btn:hover {
-    transform: translateX(5px);
+  .banner-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    padding: 2rem 0;
+  }
+  
+  .content-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  
+  .title {
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    color: #000;
+  }
+  
+  .description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #333;
+    margin-bottom: 2rem;
+  }
+  
+  .shop-now-btn {
+    background: #000;
+    color: #fff;
+    padding: 1rem 2rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .content-right {
+    position: relative;
+  }
+  
+  .gift-items-pattern {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .banner-footer {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid #eee;
+    margin-top: 2rem;
+  }
+  
+  .size-text {
+    color: #666;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+  }
+  
+  @media (max-width: 768px) {
+    .banner-nav {
+      flex-direction: column;
+      gap: 1rem;
+      text-align: center;
+    }
+  
+    .banner-content {
+      grid-template-columns: 1fr;
+    }
+  
+    .content-left {
+      text-align: center;
+      align-items: center;
+    }
+  
+    .title {
+      font-size: 2.5rem;
+    }
   }
