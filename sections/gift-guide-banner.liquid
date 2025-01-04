@@ -1,0 +1,151 @@
+{{ 'gift-guide-banner.css' | asset_url | stylesheet_tag }}
+
+<div class="gift-guide-banner">
+  <!-- Top Navigation -->
+  <div class="banner-nav">
+    <div class="brand">{{ section.settings.brand_name }}</div>
+    <div class="nav-center">{{ section.settings.tagline }}</div>
+    <div class="nav-right">
+      <button class="choose-gift-btn">
+        {{ section.settings.button_text }} →
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Banner Area -->
+  <div class="banner-main">
+    <div class="pattern-container">
+      <svg class="line-icons" viewBox="0 0 800 600">
+        <!-- Bow Tie -->
+        <g class="icon-bowtie">
+          <path d="M50,50 C70,40 80,60 100,50 C80,60 70,40 50,50"/>
+        </g>
+
+        <!-- Camera -->
+        <g class="icon-camera" transform="translate(150,30)">
+          <rect x="0" y="0" width="100" height="70" rx="5"/>
+          <rect x="20" y="15" width="60" height="40" rx="5"/>
+          <circle cx="50" cy="35" r="15"/>
+          <rect x="70" y="10" width="20" height="15"/>
+        </g>
+
+        <!-- Compass -->
+        <g class="icon-compass" transform="translate(300,40)">
+          <circle cx="0" cy="0" r="25"/>
+          <path d="M-15,0 H15 M0,-15 V15"/>
+        </g>
+
+        <!-- Notebook -->
+        <g class="icon-notebook" transform="translate(450,30)">
+          <rect x="0" y="0" width="70" height="100" rx="3"/>
+          <line x1="10" y1="20" x2="60" y2="20"/>
+          <line x1="10" y1="40" x2="60" y2="40"/>
+          <line x1="10" y1="60" x2="60" y2="60"/>
+        </g>
+
+        <!-- Pencil -->
+        <g class="icon-pencil" transform="translate(600,50)">
+          <path d="M0,0 L80,0 L85,5 L80,10 L0,10 Z"/>
+          <line x1="70" y1="5" x2="90" y2="5"/>
+        </g>
+
+        <!-- Watch -->
+        <g class="icon-watch" transform="translate(100,200)">
+          <circle cx="0" cy="0" r="25"/>
+          <rect x="-5" y="-30" width="10" height="8"/>
+          <line x1="0" y1="0" x2="0" y2="-10"/>
+          <line x1="0" y1="0" x2="10" y2="0"/>
+        </g>
+
+        <!-- Lens -->
+        <g class="icon-lens" transform="translate(250,200)">
+          <circle cx="0" cy="0" r="25"/>
+          <circle cx="0" cy="0" r="20"/>
+          <circle cx="0" cy="0" r="15"/>
+        </g>
+
+        <!-- Repeat patterns at different positions -->
+        <use href=".icon-camera" x="400" y="200"/>
+        <use href=".icon-compass" x="550" y="200"/>
+        <use href=".icon-notebook" x="150" y="350"/>
+        <use href=".icon-pencil" x="300" y="350"/>
+        <use href=".icon-watch" x="450" y="350"/>
+        <use href=".icon-lens" x="600" y="350"/>
+      </svg>
+    </div>
+
+    <div class="banner-content">
+      <h1 class="banner-title">{{ section.settings.heading }}</h1>
+      <p class="banner-description">{{ section.settings.description }}</p>
+      <a href="{{ section.settings.button_link }}" class="shop-now-btn">
+        {{ section.settings.shop_button_text }} →
+      </a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="banner-footer">
+    <p>{{ section.settings.size_text }}</p>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Gift Guide Banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "brand_name",
+      "label": "Brand Name",
+      "default": "TISSO VISION"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Find the ideal gift for your loved ones."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Top Button Text",
+      "default": "CHOOSE GIFT"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The Gift Guide"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season."
+    },
+    {
+      "type": "text",
+      "id": "shop_button_text",
+      "label": "Shop Button Text",
+      "default": "SHOP NOW"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Shop Button Link"
+    },
+    {
+      "type": "text",
+      "id": "size_text",
+      "label": "Size Range Text",
+      "default": "SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Gift Guide Banner",
+      "category": "Promotional"
+    }
+  ]
+}
+{% endschema %}

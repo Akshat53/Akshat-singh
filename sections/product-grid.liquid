@@ -1,0 +1,148 @@
+{{ 'product-grid.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'popup.js' | asset_url }}" defer="defer"></script>
+
+<div class="product-grid-section">
+  <h2 class="section-title">{{ section.settings.title }}</h2>
+  
+  <div class="product-grid">
+    {% for block in section.blocks %}
+      {% assign product = block.settings.product %}
+      {% if product != blank %}
+        <div class="product-item" {{ block.shopify_attributes }}>
+          <div class="product-image-wrapper">
+            {% if product.featured_image %}
+              <img 
+                src="{{ product.featured_image | img_url: '600x600', crop: 'center' }}"
+                alt="{{ product.featured_image.alt | escape }}"
+                loading="lazy"
+                class="product-image"
+                width="600"
+                height="600"
+              >
+            {% endif %}
+            
+            <button 
+              class="quick-add-btn"
+              type="button"
+              aria-label="Quick view {{ product.title }}"
+              data-product-handle="{{ product.handle }}"
+              data-product-title="{{ product.title }}"
+              data-product-price="{{ product.price }}"
+              data-product-image="{{ product.featured_image | img_url: '800x' }}"
+              data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+              data-product-options="{{ product.options_with_values | json | escape }}"
+            >
+              +
+            </button>
+          </div>
+          
+          <div class="product-info">
+            <h3 class="product-title">{{ product.title }}</h3>
+            <div class="product-price">{{ product.price | money }}</div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Popup Template -->
+<div class="popup-overlay">
+  <div class="product-popup">
+    <button class="close-popup" type="button" aria-label="Close popup">×</button>
+    
+    <div class="popup-content">
+      <div class="popup-image-container">
+        <img src="" alt="" id="popup-product-image">
+      </div>
+      
+      <div class="popup-details">
+        <h3 class="popup-title"></h3>
+        <div class="popup-price"></div>
+        <div class="popup-description"></div>
+        
+        <div class="variant-options">
+          <div class="color-selector">
+            <label>Color</label>
+            <div class="color-options"></div>
+          </div>
+          
+          <div class="size-selector">
+            <label>Size</label>
+            <div class="size-select-wrapper">
+              <select class="size-select">
+                <option value="">Choose your size</option>
+              </select>
+              <span class="select-arrow">▼</span>
+            </div>
+          </div>
+        </div>
+        
+        <button type="button" class="add-to-cart-btn" disabled>
+          ADD TO CART <span class="arrow">→</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product Grid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Featured Products"
+    },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Columns on desktop",
+      "options": [
+        {
+          "value": "2",
+          "label": "2 columns"
+        },
+        {
+          "value": "3",
+          "label": "3 columns"
+        },
+        {
+          "value": "4",
+          "label": "4 columns"
+        }
+      ],
+      "default": "3"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "Product Grid",
+      "blocks": [
+        {"type": "product"},
+        {"type": "product"},
+        {"type": "product"},
+        {"type": "product"},
+        {"type": "product"},
+        {"type": "product"}
+      ]
+    }
+  ]
+}
+{% endschema %}
