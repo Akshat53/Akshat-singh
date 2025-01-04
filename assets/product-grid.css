@@ -54,7 +54,7 @@
     right: 0;
     bottom: 0;
     background: rgba(0,0,0,0.5);
-    display: none; /* Changed from flex to none to hide by default */
+    display: none; /* Hidden by default */
     align-items: center;
     justify-content: center;
     z-index: 1000;

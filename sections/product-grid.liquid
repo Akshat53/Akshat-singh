@@ -20,11 +20,15 @@
                 width="600"
                 height="600"
               >
-           <button 
+<button 
   class="quick-add-btn"
   type="button"
   aria-label="Quick view {{ product.title }}"
   data-product-handle="{{ product.handle }}"
+  data-product-title="{{ product.title }}"
+  data-product-price="{{ product.price }}"
+  data-product-image="{{ product.featured_image | img_url: '600x600', crop: 'center' }}"
+  data-product-id="{{ product.id }}"
 >
   +
 </button>
