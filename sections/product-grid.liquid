@@ -1,0 +1,101 @@
+{{ 'product-grid.css' | asset_url | stylesheet_tag }}
+{{ 'popup.js' | asset_url | script_tag }}
+
+<div class="product-grid-section">
+  <h2 class="section-title">{{ section.settings.title }}</h2>
+  
+  <div class="product-grid">
+    {% for block in section.blocks %}
+      {% if block.settings.product != blank %}
+        {% assign product = block.settings.product %}
+        <div class="product-item" data-product-id="{{ product.id }}">
+          <div class="product-image-wrapper">
+            <img 
+              src="{{ product.featured_image | img_url: '400x' }}" 
+              alt="{{ product.title }}"
+              loading="lazy"
+            >
+            <button 
+              class="quick-add-btn" 
+              data-product-id="{{ product.id }}"
+              aria-label="Quick view {{ product.title }}"
+            >
+              +
+            </button>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Product Popup Template -->
+<div class="popup-overlay" style="display: none;">
+  <div class="product-popup">
+    <button class="close-popup" aria-label="Close popup">&times;</button>
+    
+    <div class="popup-content">
+      <div class="product-image">
+        <img src="" alt="" id="popup-product-image">
+      </div>
+      
+      <div class="product-details">
+        <h3 class="product-title"></h3>
+        <div class="product-price"></div>
+        <div class="product-description"></div>
+        
+        <div class="variant-selectors">
+          <!-- Dynamically populated -->
+        </div>
+        
+        <button class="add-to-cart-btn">
+          ADD TO CART
+          <svg class="arrow-icon" width="24" height="24" viewBox="0 0 24 24">
+            <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product Grid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Tisso vision in the wild"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Product Grid",
+      "blocks": [
+        {"type": "product"},
+        {"type": "product"},
+        {"type": "product"},
+        {"type": "product"},
+        {"type": "product"},
+        {"type": "product"}
+      ]
+    }
+  ]
+}
+{% endschema %}
