@@ -10,64 +10,114 @@ document.addEventListener('DOMContentLoaded', () => {
       popupPrice: document.querySelector('.popup-price'),
       popupDescription: document.querySelector('.popup-description'),
       popupImage: document.querySelector('#popup-product-image'),
-      variantSelectors: document.querySelector('.variant-selectors')
+      colorOptions: document.querySelector('.color-options'),
+      sizeSelect: document.querySelector('.size-select')
     };
   
     // State management
     let state = {
-      currentVariantId: null,
+      currentProduct: null,
+      selectedColor: null,
+      selectedSize: null,
       isLoading: false
     };
   
     // Format money amount
     function formatMoney(amount) {
-      // Convert string to number and ensure it's a valid number
-      const price = parseFloat(amount);
-      if (isNaN(price)) {
-        return '$0.00';
-      }
       return new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD',
         minimumFractionDigits: 2
-      }).format(price);
+      }).format(amount);
+    }
+  
+    // Update add to cart button state
+    function updateAddToCartButton(enabled = true, text = 'ADD TO CART →') {
+      elements.addToCartBtn.disabled = !enabled;
+      elements.addToCartBtn.innerHTML = text + (enabled ? ' <span class="arrow">→</span>' : '');
+    }
+  
+    // Create color options
+    function createColorOptions(colors) {
+      elements.colorOptions.innerHTML = '';
+      colors.forEach(color => {
+        const colorBtn = document.createElement('div');
+        colorBtn.className = 'color-option';
+        colorBtn.textContent = color;
+        colorBtn.addEventListener('click', () => selectColor(color, colorBtn));
+        elements.colorOptions.appendChild(colorBtn);
+      });
+    }
+  
+    // Create size options
+    function createSizeOptions(sizes) {
+      elements.sizeSelect.innerHTML = '<option value="">Choose your size</option>';
+      sizes.forEach(size => {
+        const option = document.createElement('option');
+        option.value = size;
+        option.textContent = size;
+        elements.sizeSelect.appendChild(option);
+      });
+    }
+  
+    // Select color handler
+    function selectColor(color, element) {
+      // Remove selected class from all colors
+      elements.colorOptions.querySelectorAll('.color-option').forEach(btn => {
+        btn.classList.remove('selected');
+      });
+      // Add selected class to chosen color
+      element.classList.add('selected');
+      state.selectedColor = color;
+      validateSelection();
+    }
+  
+    // Validate selection
+    function validateSelection() {
+      const isValid = state.selectedColor && state.selectedSize;
+      updateAddToCartButton(isValid);
+      return isValid;
     }
   
     // Populate popup with product data
     function populatePopup(productData) {
-      if (!productData) return;
-  
-      // Set basic product information
       elements.popupTitle.textContent = productData.title;
-      elements.popupPrice.textContent = formatMoney(productData.price);
+      elements.popupPrice.textContent = formatMoney(productData.price / 100);
       elements.popupImage.src = productData.image;
       elements.popupImage.alt = productData.title;
+      
+      // Create color and size options if available
+      if (productData.colors) {
+        createColorOptions(productData.colors);
+      }
+      if (productData.sizes) {
+        createSizeOptions(productData.sizes);
+      }
   
-      // Store variant ID in state
-      state.currentVariantId = productData.variantId;
-  
-      // Enable add to cart button
-      elements.addToCartBtn.disabled = false;
-      elements.addToCartBtn.textContent = 'ADD TO CART →';
+      // Reset selections
+      state.selectedColor = null;
+      state.selectedSize = null;
+      validateSelection();
     }
   
     // Add to cart functionality
-    async function addToCart(variantId, quantity = 1) {
-      if (state.isLoading || !variantId) return;
+    async function addToCart() {
+      if (state.isLoading || !validateSelection()) return;
   
       try {
         state.isLoading = true;
-        elements.addToCartBtn.disabled = true;
-        elements.addToCartBtn.textContent = 'Adding...';
+        updateAddToCartButton(false, 'Adding...');
   
         const formData = {
           items: [{
-            id: variantId,
-            quantity: quantity
+            id: state.currentProduct.variantId,
+            quantity: 1,
+            properties: {
+              Color: state.selectedColor,
+              Size: state.selectedSize
+            }
           }]
         };
-  
-        console.log('Adding to cart:', formData); // Debug log
   
         const response = await fetch('/cart/add.js', {
           method: 'POST',
@@ -82,43 +132,44 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!response.ok) {
           throw new Error(result.description || 'Add to cart failed');
         }
+  
+        updateAddToCartButton(true, 'Added! ✓');
         
-        // Success handling
-        elements.addToCartBtn.textContent = 'Added! ✓';
-        
-        // Close popup after short delay
         setTimeout(() => {
           closePopup();
-        }, 1000);
+        }, 1500);
   
       } catch (error) {
         console.error('Error adding to cart:', error);
-        elements.addToCartBtn.textContent = 'Failed - Try Again';
+        updateAddToCartButton(true, 'Failed - Try Again');
       } finally {
         state.isLoading = false;
-        elements.addToCartBtn.disabled = false;
       }
     }
   
-    // Popup open/close functions
+    // Open popup
     function openPopup() {
       elements.overlay.style.display = 'flex';
       document.body.style.overflow = 'hidden';
     }
   
+    // Close popup
     function closePopup() {
       elements.overlay.style.display = 'none';
       document.body.style.overflow = '';
       
       // Reset state
       state = {
-        currentVariantId: null,
+        currentProduct: null,
+        selectedColor: null,
+        selectedSize: null,
         isLoading: false
       };
   
-      // Reset button
-      elements.addToCartBtn.textContent = 'ADD TO CART →';
-      elements.addToCartBtn.disabled = false;
+      // Reset UI
+      elements.colorOptions.innerHTML = '';
+      elements.sizeSelect.innerHTML = '';
+      updateAddToCartButton(true);
     }
   
     // Event Listeners
@@ -129,28 +180,27 @@ document.addEventListener('DOMContentLoaded', () => {
   
         const productData = {
           title: button.dataset.productTitle,
-          price: button.dataset.productPrice,
+          price: parseFloat(button.dataset.productPrice),
           image: button.dataset.productImage,
-          variantId: button.dataset.variantId
+          variantId: button.dataset.variantId,
+          colors: ['Blue', 'Black'], // Example colors - replace with actual product colors
+          sizes: ['S', 'M', 'L', 'XL'] // Example sizes - replace with actual product sizes
         };
   
-        console.log('Product data:', productData); // Debug log
-  
+        state.currentProduct = productData;
         populatePopup(productData);
         openPopup();
       });
     });
   
-    // Add to cart button handler
-    elements.addToCartBtn?.addEventListener('click', () => {
-      if (state.currentVariantId) {
-        const quantity = 1;
-        addToCart(state.currentVariantId, quantity);
-      } else {
-        console.error('No variant ID available');
-        elements.addToCartBtn.textContent = 'Error - Try Again';
-      }
+    // Size select handler
+    elements.sizeSelect?.addEventListener('change', (e) => {
+      state.selectedSize = e.target.value;
+      validateSelection();
     });
+  
+    // Add to cart button handler
+    elements.addToCartBtn?.addEventListener('click', addToCart);
   
     // Close popup handlers
     elements.closeBtn?.addEventListener('click', closePopup);
