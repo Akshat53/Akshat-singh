@@ -5,45 +5,78 @@
     background: #ffffff;
   }
   
-  .banner-top {
+  .banner-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 4rem;
+    margin-bottom: 3rem;
+    padding: 1rem 0;
   }
   
   .brand-name {
     font-size: 1.5rem;
     font-weight: 500;
+    margin: 0;
   }
   
-  .top-tagline {
-    color: #666;
+  .tagline {
+    font-size: 1rem;
+    color: #333;
+    margin: 0;
   }
   
-  .choose-gift {
-    background: #ffeb3b;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
+  .choose-gift-btn {
+    background: #FFE525;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
     cursor: pointer;
+    transition: transform 0.3s ease;
+    border-radius: 4px;
+  }
+  
+  .choose-gift-btn:hover {
+    transform: translateX(5px);
   }
   
   .banner-content {
-    text-align: left;
-    margin-bottom: 4rem;
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  
+  .illustration-grid {
+    max-width: 800px;
+    margin: 0 auto 2rem;
+  }
+  
+  .banner-illustrations {
+    width: 100%;
+    height: auto;
+  }
+  
+  .illustration-item {
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
   
   .gift-guide-title {
-    font-size: 3.5rem;
+    font-size: 3rem;
     font-weight: bold;
-    margin-bottom: 2rem;
+    margin: 2rem 0;
+    color: #000;
   }
   
-  .gift-description {
+  .gift-guide-desc {
+    max-width: 600px;
+    margin: 0 auto 2rem;
     font-size: 1.1rem;
     line-height: 1.6;
     color: #666;
-    margin-bottom: 2rem;
   }
   
   .shop-now-btn {
@@ -53,68 +86,37 @@
     color: #fff;
     padding: 1rem 2rem;
     text-decoration: none;
-    border-radius: 0;
     font-weight: 500;
-  }
-  
-  .arrow {
-    margin-left: 0.5rem;
+    margin-top: 1rem;
     transition: transform 0.3s ease;
   }
   
-  .shop-now-btn:hover .arrow {
-    transform: translateX(5px);
+  .shop-now-btn:hover {
+    transform: translateX(10px);
   }
   
-  .illustration-grid {
-    margin: 4rem 0;
-    width: 100%;
-  }
-  
-  .illustration-grid svg {
-    width: 100%;
-    height: auto;
-  }
-  
-  .icon {
-    opacity: 0;
-    animation: fadeIn 1s forwards;
-  }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  .size-range {
+  .banner-footer {
     text-align: center;
-    color: #666;
-    font-size: 0.9rem;
-    text-transform: uppercase;
     border-top: 1px solid #eee;
     padding-top: 2rem;
     margin-top: 2rem;
   }
   
-  /* Mobile styles */
+  .size-range {
+    font-size: 0.9rem;
+    color: #666;
+    text-transform: uppercase;
+    margin: 0;
+  }
+  
   @media (max-width: 768px) {
-    .banner-top {
+    .banner-header {
       flex-direction: column;
       text-align: center;
       gap: 1rem;
     }
   
     .gift-guide-title {
-      font-size: 2.5rem;
-    }
-  
-    .gift-description {
-      font-size: 1rem;
+      font-size: 2rem;
     }
   }
