@@ -15,17 +15,22 @@ document.addEventListener('DOMContentLoaded', () => {
   
     // State management
     let state = {
-      currentProduct: null,
-      currentVariant: null,
+      currentVariantId: null,
       isLoading: false
     };
   
     // Format money amount
-    function formatMoney(cents) {
-      return (cents / 100).toLocaleString('en-US', {
+    function formatMoney(amount) {
+      // Convert string to number and ensure it's a valid number
+      const price = parseFloat(amount);
+      if (isNaN(price)) {
+        return '$0.00';
+      }
+      return new Intl.NumberFormat('en-US', {
         style: 'currency',
-        currency: 'USD'
-      });
+        currency: 'USD',
+        minimumFractionDigits: 2
+      }).format(price);
     }
   
     // Populate popup with product data
@@ -38,18 +43,17 @@ document.addEventListener('DOMContentLoaded', () => {
       elements.popupImage.src = productData.image;
       elements.popupImage.alt = productData.title;
   
+      // Store variant ID in state
+      state.currentVariantId = productData.variantId;
+  
       // Enable add to cart button
       elements.addToCartBtn.disabled = false;
       elements.addToCartBtn.textContent = 'ADD TO CART →';
-  
-      // Store product data in state
-      state.currentProduct = productData;
-      state.currentVariant = { id: productData.id };
     }
   
     // Add to cart functionality
     async function addToCart(variantId, quantity = 1) {
-      if (state.isLoading) return;
+      if (state.isLoading || !variantId) return;
   
       try {
         state.isLoading = true;
@@ -63,6 +67,8 @@ document.addEventListener('DOMContentLoaded', () => {
           }]
         };
   
+        console.log('Adding to cart:', formData); // Debug log
+  
         const response = await fetch('/cart/add.js', {
           method: 'POST',
           headers: {
@@ -71,9 +77,11 @@ document.addEventListener('DOMContentLoaded', () => {
           body: JSON.stringify(formData)
         });
   
-        if (!response.ok) throw new Error('Add to cart failed');
-  
         const result = await response.json();
+  
+        if (!response.ok) {
+          throw new Error(result.description || 'Add to cart failed');
+        }
         
         // Success handling
         elements.addToCartBtn.textContent = 'Added! ✓';
@@ -104,10 +112,13 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // Reset state
       state = {
-        currentProduct: null,
-        currentVariant: null,
+        currentVariantId: null,
         isLoading: false
       };
+  
+      // Reset button
+      elements.addToCartBtn.textContent = 'ADD TO CART →';
+      elements.addToCartBtn.disabled = false;
     }
   
     // Event Listeners
@@ -117,12 +128,13 @@ document.addEventListener('DOMContentLoaded', () => {
         e.stopPropagation();
   
         const productData = {
-          id: button.dataset.productId,
-          handle: button.dataset.productHandle,
           title: button.dataset.productTitle,
-          price: parseInt(button.dataset.productPrice, 10),
-          image: button.dataset.productImage
+          price: button.dataset.productPrice,
+          image: button.dataset.productImage,
+          variantId: button.dataset.variantId
         };
+  
+        console.log('Product data:', productData); // Debug log
   
         populatePopup(productData);
         openPopup();
@@ -131,9 +143,12 @@ document.addEventListener('DOMContentLoaded', () => {
   
     // Add to cart button handler
     elements.addToCartBtn?.addEventListener('click', () => {
-      if (state.currentVariant) {
+      if (state.currentVariantId) {
         const quantity = 1;
-        addToCart(state.currentVariant.id, quantity);
+        addToCart(state.currentVariantId, quantity);
+      } else {
+        console.error('No variant ID available');
+        elements.addToCartBtn.textContent = 'Error - Try Again';
       }
     });
   
