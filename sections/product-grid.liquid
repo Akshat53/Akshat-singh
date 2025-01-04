@@ -6,19 +6,28 @@
   
   <div class="product-grid">
     {% for block in section.blocks %}
-      {% if block.settings.product != blank %}
-        {% assign product = block.settings.product %}
-        <div class="product-item" data-product-id="{{ product.id }}">
+      {% assign product = block.settings.product %}
+      {% if product != blank %}
+        <div class="product-item" {{ block.shopify_attributes }}>
           <div class="product-image-wrapper">
-            <img 
-              src="{{ product.featured_image | img_url: '400x' }}" 
-              alt="{{ product.title }}"
-              loading="lazy"
-            >
+            {% if product.featured_image %}
+              <img 
+                src="{{ product.featured_image | img_url: '400x' }}"
+                alt="{{ product.featured_image.alt | escape }}"
+                loading="lazy"
+                width="400"
+                height="400"
+                class="product-image"
+              >
+            {% else %}
+              {{ 'product-1' | placeholder_svg_tag: 'product-image placeholder' }}
+            {% endif %}
+            
             <button 
-              class="quick-add-btn" 
-              data-product-id="{{ product.id }}"
+              class="quick-add-btn"
+              type="button"
               aria-label="Quick view {{ product.title }}"
+              data-product-id="{{ product.id }}"
             >
               +
             </button>
@@ -29,35 +38,40 @@
   </div>
 </div>
 
-<!-- Product Popup Template -->
+<!-- Product Popup -->
 <div class="popup-overlay" style="display: none;">
   <div class="product-popup">
-    <button class="close-popup" aria-label="Close popup">&times;</button>
+    <button class="close-popup" type="button" aria-label="Close popup">&times;</button>
     
     <div class="popup-content">
-      <div class="product-image">
+      <div class="popup-image">
         <img src="" alt="" id="popup-product-image">
       </div>
       
-      <div class="product-details">
-        <h3 class="product-title"></h3>
-        <div class="product-price"></div>
-        <div class="product-description"></div>
+      <div class="popup-details">
+        <h3 class="popup-title"></h3>
+        <div class="popup-price"></div>
+        <p class="popup-description"></p>
         
-        <div class="variant-selectors">
-          <!-- Dynamically populated -->
-        </div>
-        
-        <button class="add-to-cart-btn">
-          ADD TO CART
-          <svg class="arrow-icon" width="24" height="24" viewBox="0 0 24 24">
-            <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none"/>
-          </svg>
-        </button>
+        <form class="popup-form">
+          <div class="variant-selectors"></div>
+          
+          <button 
+            type="submit" 
+            class="add-to-cart-btn"
+            name="add"
+          >
+            ADD TO CART
+            <svg class="arrow-icon" width="24" height="24" viewBox="0 0 24 24">
+              <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none"/>
+            </svg>
+          </button>
+        </form>
       </div>
     </div>
   </div>
 </div>
+
 
 {% schema %}
 {
