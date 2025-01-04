@@ -1,6 +1,7 @@
 {{ 'product-grid.css' | asset_url | stylesheet_tag }}
-
 <script src="{{ 'popup.js' | asset_url }}" defer="defer"></script>
+{{ 'product-grid.css' | asset_url | stylesheet_tag }}
+{{ 'popup.js' | asset_url | script_tag }}
 
 <div class="product-grid-section">
   <h2 class="section-title">{{ section.settings.title }}</h2>
@@ -9,59 +10,60 @@
     {% for block in section.blocks %}
       {% assign product = block.settings.product %}
       {% if product != blank %}
-        <div class="product-item" {{ block.shopify_attributes }}>
-          <div class="product-image-wrapper">
+        <div class="product-card">
+          <div class="product-image-container">
             {% if product.featured_image %}
               <img 
-                src="{{ product.featured_image | img_url: '600x600', crop: 'center' }}"
-                alt="{{ product.featured_image.alt | escape }}"
-                loading="lazy"
+                src="{{ product.featured_image | img_url: '400x' }}" 
+                alt="{{ product.title }}" 
                 class="product-image"
-                width="600"
-                height="600"
               >
               <button 
-                class="quick-add-btn"
-                type="button"
-                aria-label="Quick view {{ product.title }}"
+                class="quick-add-btn" 
                 data-product-id="{{ product.id }}"
+                aria-label="Quick add {{ product.title }}"
               >
                 +
               </button>
             {% endif %}
           </div>
+          <h3 class="product-title">{{ product.title }}</h3>
+          <p class="product-price">{{ product.price | money }}</p>
         </div>
       {% endif %}
     {% endfor %}
   </div>
-</div>
 
-<!-- Popup Template -->
-<div class="popup-overlay">
-  <div class="product-popup">
-    <button class="close-popup" type="button" aria-label="Close popup">&times;</button>
-    
-    <div class="popup-content">
-      <div class="popup-image">
-        <img src="" alt="" id="popup-product-image">
-      </div>
+  <div class="popup-overlay">
+    <div class="product-popup">
+      <button class="close-popup" aria-label="Close popup">×</button>
       
-      <div class="popup-details">
-        <h3 class="popup-title"></h3>
-        <div class="popup-price"></div>
-        <div class="popup-description"></div>
-        
-        <div class="variant-selectors"></div>
-        
-        <button type="button" class="add-to-cart-btn">
-          ADD TO CART →
-        </button>
+      <div class="popup-content">
+        <div class="popup-image-container">
+          <img id="popup-product-image" src="" alt="">
+        </div>
+
+        <div class="popup-details">
+          <h3 class="popup-title"></h3>
+          <p class="popup-price"></p>
+          <p class="popup-description"></p>
+
+          <div class="variant-selectors"></div>
+
+          <div class="quantity-selector">
+            <label for="quantity">Quantity</label>
+            <input type="number" id="quantity" name="quantity" value="1" min="1">
+          </div>
+          
+          <button class="add-to-cart-btn">
+            ADD TO CART →
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Rest of the schema remains the same -->
 {% schema %}
 {
   "name": "Product Grid",

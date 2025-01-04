@@ -1,31 +1,17 @@
-.product-grid-section {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
-    background: #fff;
-  }
-  
-  .section-title {
-    font-size: 2rem;
-    margin-bottom: 2rem;
-    color: #000;
-  }
-  
-  .product-grid {
+.product-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 2rem 0;
   }
   
-  .product-item {
+  .product-card {
+    position: relative;
+  }
+  
+  .product-image-container {
     position: relative;
     aspect-ratio: 1;
-  }
-  
-  .product-image-wrapper {
-    position: relative;
-    width: 100%;
-    height: 100%;
     overflow: hidden;
   }
   
@@ -37,36 +23,181 @@
   
   .quick-add-btn {
     position: absolute;
-    top: 1rem;
     right: 1rem;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
+    top: 1rem;
     background: white;
     border: none;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.5rem;
-    transition: transform 0.3s ease;
+    transition: transform 0.2s ease;
   }
   
   .quick-add-btn:hover {
     transform: scale(1.1);
   }
   
-  /* Mobile Styles */
-  @media (max-width: 768px) {
-    .product-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1rem;
-    }
+  .popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
   }
   
-  @media (max-width: 480px) {
-    .product-grid {
+  .product-popup {
+    background: white;
+    padding: 2rem;
+    max-width: 800px;
+    width: 90%;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .popup-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  
+  .close-popup {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    line-height: 1;
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+  }
+  
+  .close-popup:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+  
+  .popup-image-container {
+    width: 100%;
+    aspect-ratio: 1;
+  }
+  
+  #popup-product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .popup-details {
+    padding: 1rem 0;
+  }
+  
+  .popup-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .popup-price {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  
+  .popup-description {
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+  
+  .variant-selectors {
+    margin: 1rem 0;
+  }
+  
+  .variant-option {
+    margin-bottom: 1rem;
+  }
+  
+  .variant-option label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+  
+  .variant-option select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .quantity-selector {
+    margin: 1rem 0;
+  }
+  
+  .quantity-selector label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+  
+  .quantity-selector input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .add-to-cart-btn {
+    width: 100%;
+    padding: 1rem;
+    background: black;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: 1rem;
+    transition: background-color 0.2s ease;
+  }
+  
+  .add-to-cart-btn:hover {
+    background-color: #333;
+  }
+  
+  .add-to-cart-btn:disabled {
+    background-color: #999;
+    cursor: not-allowed;
+  }
+  
+  @media (max-width: 768px) {
+    .popup-content {
       grid-template-columns: 1fr;
+    }
+    
+    .product-popup {
+      width: 95%;
+      padding: 1.5rem;
+    }
+    
+    .popup-title {
+      font-size: 1.25rem;
     }
   }
