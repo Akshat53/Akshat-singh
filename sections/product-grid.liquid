@@ -1,34 +1,68 @@
 {{ 'product-grid.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'popup.js' | asset_url }}" defer="defer"></script>
-{{ 'product-grid.css' | asset_url | stylesheet_tag }}
-{{ 'popup.js' | asset_url | script_tag }}
 
-<div class="product-grid-section">
-  <h2 class="section-title">{{ section.settings.title }}</h2>
+<div class="page-width">
+  <h2 class="title">{{ section.settings.title }}</h2>
   
-  <div class="product-grid">
+  <div class="grid product-grid grid--2-col-tablet-down grid--4-col-desktop">
     {% for block in section.blocks %}
       {% assign product = block.settings.product %}
       {% if product != blank %}
-        <div class="product-card">
-          <div class="product-image-container">
-            {% if product.featured_image %}
-              <img 
-                src="{{ product.featured_image | img_url: '400x' }}" 
-                alt="{{ product.title }}" 
-                class="product-image"
-              >
-              <button 
-                class="quick-add-btn" 
-                data-product-id="{{ product.id }}"
-                aria-label="Quick add {{ product.title }}"
-              >
-                +
-              </button>
-            {% endif %}
+        <div class="grid__item" {{ block.shopify_attributes }}>
+          <div class="card-wrapper product-card-wrapper underline-links-hover">
+            <div class="card card--product" tabindex="-1">
+              <div class="card__inner">
+                <div class="media media--transparent ratio">
+                  {% if product.featured_media %}
+                    <img
+                      srcset="{%- if product.featured_media.width >= 165 -%}{{ product.featured_media | image_url: width: 165 }} 165w,{%- endif -%}
+                        {%- if product.featured_media.width >= 360 -%}{{ product.featured_media | image_url: width: 360 }} 360w,{%- endif -%}
+                        {%- if product.featured_media.width >= 533 -%}{{ product.featured_media | image_url: width: 533 }} 533w,{%- endif -%}
+                        {%- if product.featured_media.width >= 720 -%}{{ product.featured_media | image_url: width: 720 }} 720w,{%- endif -%}
+                        {%- if product.featured_media.width >= 1000 -%}{{ product.featured_media | image_url: width: 1000 }} 1000w,{%- endif -%}"
+                      src="{{ product.featured_media | image_url: width: 533 }}"
+                      sizes="(min-width: 1200px) calc((1200px - 10rem) / 4),
+                        (min-width: 750px) calc((100vw - 11.5rem) / 2),
+                        calc(100vw - 4rem)"
+                      alt="{{ product.featured_media.alt | escape }}"
+                      loading="lazy"
+                      width="{{ product.featured_media.width }}"
+                      height="{{ product.featured_media.height }}"
+                    >
+                  {% else %}
+                    {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {% endif %}
+                </div>
+                
+                <button 
+                  class="quick-add-btn" 
+                  data-product-handle="{{ product.handle }}"
+                  aria-label="Quick add {{ product.title }}"
+                >
+                  +
+                </button>
+              </div>
+
+              <div class="card__content">
+                <div class="card__information">
+                  <h3 class="card__heading">
+                    <a href="{{ product.url }}" class="full-unstyled-link">
+                      {{ product.title | escape }}
+                    </a>
+                  </h3>
+                  
+                  <div class="card-information">
+                    <div class="price">
+                      <div class="price__regular">
+                        <span class="price-item price-item--regular">
+                          {{ product.price | money }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <h3 class="product-title">{{ product.title }}</h3>
-          <p class="product-price">{{ product.price | money }}</p>
         </div>
       {% endif %}
     {% endfor %}
@@ -55,8 +89,8 @@
             <input type="number" id="quantity" name="quantity" value="1" min="1">
           </div>
           
-          <button class="add-to-cart-btn">
-            ADD TO CART →
+          <button class="add-to-cart-btn button button--primary button--full-width">
+            ADD TO CART
           </button>
         </div>
       </div>
@@ -72,7 +106,7 @@
       "type": "text",
       "id": "title",
       "label": "Section Title",
-      "default": "Tisso vision in the wild"
+      "default": "Featured Products"
     }
   ],
   "blocks": [
@@ -88,13 +122,11 @@
       ]
     }
   ],
-  "max_blocks": 6,
+  "max_blocks": 8,
   "presets": [
     {
       "name": "Product Grid",
       "blocks": [
-        {"type": "product"},
-        {"type": "product"},
         {"type": "product"},
         {"type": "product"},
         {"type": "product"},
