@@ -28,17 +28,21 @@ document.addEventListener('DOMContentLoaded', () => {
         style: 'currency',
         currency: 'USD',
         minimumFractionDigits: 2
-      }).format(amount);
+      }).format(amount / 100); // Divide by 100 to convert cents to dollars
     }
   
     // Update add to cart button state
     function updateAddToCartButton(enabled = true, text = 'ADD TO CART →') {
-      elements.addToCartBtn.disabled = !enabled;
-      elements.addToCartBtn.innerHTML = text + (enabled ? ' <span class="arrow">→</span>' : '');
+      if(elements.addToCartBtn) {
+        elements.addToCartBtn.disabled = !enabled;
+        elements.addToCartBtn.innerHTML = text + (enabled ? ' <span class="arrow">→</span>' : '');
+      }
     }
   
     // Create color options
     function createColorOptions(colors) {
+      if(!elements.colorOptions) return;
+      
       elements.colorOptions.innerHTML = '';
       colors.forEach(color => {
         const colorBtn = document.createElement('div');
@@ -51,6 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
   
     // Create size options
     function createSizeOptions(sizes) {
+      if(!elements.sizeSelect) return;
+  
       elements.sizeSelect.innerHTML = '<option value="">Choose your size</option>';
       sizes.forEach(size => {
         const option = document.createElement('option');
@@ -62,6 +68,8 @@ document.addEventListener('DOMContentLoaded', () => {
   
     // Select color handler
     function selectColor(color, element) {
+      if(!elements.colorOptions) return;
+  
       // Remove selected class from all colors
       elements.colorOptions.querySelectorAll('.color-option').forEach(btn => {
         btn.classList.remove('selected');
@@ -81,10 +89,14 @@ document.addEventListener('DOMContentLoaded', () => {
   
     // Populate popup with product data
     function populatePopup(productData) {
-      elements.popupTitle.textContent = productData.title;
-      elements.popupPrice.textContent = formatMoney(productData.price / 100);
-      elements.popupImage.src = productData.image;
-      elements.popupImage.alt = productData.title;
+      if(!productData) return;
+  
+      if(elements.popupTitle) elements.popupTitle.textContent = productData.title;
+      if(elements.popupPrice) elements.popupPrice.textContent = formatMoney(productData.price);
+      if(elements.popupImage) {
+        elements.popupImage.src = productData.image;
+        elements.popupImage.alt = productData.title;
+      }
       
       // Create color and size options if available
       if (productData.colors) {
@@ -127,9 +139,8 @@ document.addEventListener('DOMContentLoaded', () => {
           body: JSON.stringify(formData)
         });
   
-        const result = await response.json();
-  
         if (!response.ok) {
+          const result = await response.json();
           throw new Error(result.description || 'Add to cart failed');
         }
   
@@ -149,12 +160,14 @@ document.addEventListener('DOMContentLoaded', () => {
   
     // Open popup
     function openPopup() {
+      if(!elements.overlay) return;
       elements.overlay.style.display = 'flex';
       document.body.style.overflow = 'hidden';
     }
   
     // Close popup
     function closePopup() {
+      if(!elements.overlay) return;
       elements.overlay.style.display = 'none';
       document.body.style.overflow = '';
       
@@ -167,24 +180,25 @@ document.addEventListener('DOMContentLoaded', () => {
       };
   
       // Reset UI
-      elements.colorOptions.innerHTML = '';
-      elements.sizeSelect.innerHTML = '';
+      if(elements.colorOptions) elements.colorOptions.innerHTML = '';
+      if(elements.sizeSelect) elements.sizeSelect.innerHTML = '';
       updateAddToCartButton(true);
     }
   
     // Event Listeners
-    elements.quickAddButtons.forEach(button => {
+    // Quick add buttons
+    elements.quickAddButtons?.forEach(button => {
       button.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
   
         const productData = {
           title: button.dataset.productTitle,
-          price: parseFloat(button.dataset.productPrice),
+          price: button.dataset.productPrice,
           image: button.dataset.productImage,
           variantId: button.dataset.variantId,
-          colors: ['Blue', 'Black'], // Example colors - replace with actual product colors
-          sizes: ['S', 'M', 'L', 'XL'] // Example sizes - replace with actual product sizes
+          colors: ['Blue', 'Black'], // Replace with dynamic data
+          sizes: ['S', 'M', 'L', 'XL'] // Replace with dynamic data
         };
   
         state.currentProduct = productData;
